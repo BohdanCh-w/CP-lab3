@@ -28,6 +28,6 @@ public class Product {
 
     public String toString() {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yy");
-        return String.format("%12s\t %s / %s\t %4.2f₴", name, date_produced.format(fmt), expiration_date.format(fmt), price/100.0);
+        return String.format("%28s\t %s / %s\t %4.2f₴", name, date_produced.format(fmt), expiration_date.format(fmt), price/100.0);
     }
 }
