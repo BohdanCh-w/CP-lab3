@@ -121,7 +121,7 @@ public class Main {
     }
 
     public static void generateData(int num1, int num2) throws Exception {
-        String cmd = "python data_generator.py";
+        String cmd = "python data_generator.py data.json 25 data1.json 15 data2.json 15";
         Runtime run = Runtime.getRuntime();
         Process pr = run.exec(cmd);
         pr.waitFor();
