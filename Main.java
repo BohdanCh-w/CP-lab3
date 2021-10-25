@@ -1,4 +1,5 @@
 import org.json.*;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.format.DateTimeFormatter;
@@ -8,18 +9,27 @@ import java.util.Map;
 import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.Scanner;
 
 public class Main {
     static DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yy");
     
     public static void main(String[] args) throws Exception {
+        generateData(1, 1);
+
         ArrayList<Product> products = readFromFile("data.json");
         PrintList(products);
 
         Map<LocalDate, List<Product>> expiration_table = CreateTableByExpiration(products);
         PrintTable(expiration_table);
 
-        RemoveProduct(expiration_table, "Gelly");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choose object to delete");
+        String prodName = sc.nextLine();
+        sc.close();
+
+        RemoveProduct(expiration_table, prodName);
         PrintTable(expiration_table);
 
 
@@ -87,9 +97,15 @@ public class Main {
         products.removeIf(n -> (n.getProdDate().getYear() == year));
     }
 
+    public static void PrettyPrintProducts(List<Product> products) {
+        var maxValue = products.stream().max(Comparator.comparing(v -> v.getName().length())).get();
+
+    }
+
     public static void PrintList(List<?> lst) {
+        int counter = 0;
         for (var obj : lst) {
-            System.out.println(obj);
+            System.out.println(++counter + ".  " + obj);
         }
         System.out.println("\n");
     }
@@ -102,5 +118,12 @@ public class Main {
             }
         }
         System.out.println("\n");
+    }
+
+    public static void generateData(int num1, int num2) throws Exception {
+        String cmd = "python data_generator.py data.json 25 data1.json 15 data2.json 15";
+        Runtime run = Runtime.getRuntime();
+        Process pr = run.exec(cmd);
+        pr.waitFor();
     }
 }
